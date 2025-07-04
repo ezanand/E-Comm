@@ -20,68 +20,54 @@ const AdminSidebar = () => {
     dispatch(clearCart());
     navigate("/");
   };
+
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <Link to="/admin" className="text-2xl font-medium">
+    <div className="p-6 text-sm md:text-base">
+      {/* Logo */}
+      <div className="mb-8">
+        <Link to="/admin" className="text-3xl font-bold text-white tracking-wide">
           Rabbit
         </Link>
       </div>
-      <h2 className="text-2xl font-medium mb-6 text-center">Admin Dashboard</h2>
+
+      {/* Heading */}
+      <h2 className="text-xl font-semibold text-gray-200 mb-6 text-center uppercase tracking-wider">
+        Admin Dashboard
+      </h2>
+
+      {/* Navigation */}
       <nav className="flex flex-col space-y-2">
-        <NavLink
-          to="/admin/users"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
-              : "text-gray-300 hover:bg-gray-700text-white py-3 px-4 rounded flex items-center space-x-2"
-          }
-        >
-          <FaUser />
-          <span>Users</span>
-        </NavLink>
-        <NavLink
-          to="/admin/products"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
-              : "text-gray-300 hover:bg-gray-700text-white py-3 px-4 rounded flex items-center space-x-2"
-          }
-        >
-          <FaBoxOpen />
-          <span>Products</span>
-        </NavLink>
-        <NavLink
-          to="/admin/orders"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
-              : "text-gray-300 hover:bg-gray-700text-white py-3 px-4 rounded flex items-center space-x-2"
-          }
-        >
-          <FaClipboardList />
-          <span>Orders</span>
-        </NavLink>
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
-              : "text-gray-300 hover:bg-gray-700text-white py-3 px-4 rounded flex items-center space-x-2"
-          }
-        >
-          <FaStore />
-          <span>Shop</span>
-        </NavLink>
+        {[
+          { to: "/admin/users", icon: <FaUser />, label: "Users" },
+          { to: "/admin/products", icon: <FaBoxOpen />, label: "Products" },
+          { to: "/admin/orders", icon: <FaClipboardList />, label: "Orders" },
+          { to: "/", icon: <FaStore />, label: "Shop" },
+        ].map(({ to, icon, label }) => (
+          <NavLink
+            key={label}
+            to={to}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 ${
+                isActive
+                  ? "bg-gray-700 text-white"
+                  : "text-gray-300 hover:bg-gray-800 hover:text-white"
+              }`
+            }
+          >
+            {icon}
+            <span>{label}</span>
+          </NavLink>
+        ))}
       </nav>
-      <div className="mt-6">
+
+      {/* Logout Button */}
+      <div className="mt-8">
         <button
           onClick={handleLogout}
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded flex items-center
-                justify-center space-x-2"
+          className="w-full flex items-center justify-center gap-3 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors duration-200"
         >
           <FaSignOutAlt />
-          <span>LogOut</span>
+          <span>Logout</span>
         </button>
       </div>
     </div>

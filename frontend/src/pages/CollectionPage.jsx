@@ -32,38 +32,40 @@ const CollectionPage = () => {
   };
 
   useEffect(() => {
-    // Add event listener
     document.addEventListener("mousedown", handleClickOutside);
-    // Clean up the event listener on unmount or dependency change
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <div className="flex flex-col lg:flex-row">
-      {/* Mobile Filter Button */}
-      <button
-        onClick={toggleSidebar}
-        className="lg:hidden border p-2 flex justify-center items-center"
-      >
-        <FaFilter className="mr-2" />
-      </button>
+      {/* Mobile Filter Toggle Button */}
+      <div className="lg:hidden p-4 border-b flex justify-between items-center">
+        <h2 className="text-xl font-semibold uppercase">All Collection</h2>
+        <button
+          onClick={toggleSidebar}
+          className="flex items-center gap-2 text-sm bg-gray-100 px-3 py-1 rounded"
+        >
+          <FaFilter />
+          Filters
+        </button>
+      </div>
 
-      {/* Filter Sidebar */}
+      {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed inset-y-0 z-50 left-0 w-64 bg-white overflow-y-auto transition-transform duration-300 lg:static lg:translate-x-0`}
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out transform lg:static lg:translate-x-0 lg:shadow-none
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <FilterSidebar />
       </div>
-      <div className="flex-grow p-4">
-        <h2 className="text-2xl uppercase mb-4">All Collection</h2>
 
-        {/* Sort option */}
+      {/* Main Content */}
+      <div className="flex-grow px-4 py-6">
+        <div className="hidden lg:block">
+          <h2 className="text-2xl font-bold uppercase mb-4">All Collection</h2>
+        </div>
 
+        {/* Sort Options */}
         <SortOptions />
 
         {/* Product Grid */}

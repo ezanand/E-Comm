@@ -1,155 +1,150 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   HiOutlineUser,
   HiOutlineShoppingBag,
   HiBars3BottomRight,
 } from "react-icons/hi2";
-import SearchBar from "./SearchBar";
-import CartDrawer from "../Layout/CartDrawer";
-import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import SearchBar from "./SearchBar";
+import CartDrawer from "../Layout/CartDrawer";
+
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
   const { cart } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
+  const location = useLocation();
 
   const cartItemCount =
-    cart?.products?.reduce((total, product) => total + product.quantity, 0) ||
-    0;
+    cart?.products?.reduce((total, product) => total + product.quantity, 0) || 0;
 
-  const toggleNavDrawer = () => {
-    setNavDrawerOpen(!navDrawerOpen);
-  };
+  const toggleNavDrawer = () => setNavDrawerOpen(!navDrawerOpen);
+  const toggleCartDrawer = () => setDrawerOpen(!drawerOpen);
 
-  const toggleCartDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
+  // Auto-close nav drawer on route change
+  useEffect(() => {
+    setNavDrawerOpen(false);
+  }, [location.pathname]);
 
   return (
     <>
       <nav className="container mx-auto flex items-center justify-between py-4 px-6">
-        {/* Left - Logo */}
-        <div>
-          <Link to="/" className="text-2xl font-medium">
-            Rabbit
-          </Link>
-        </div>
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-semibold tracking-tight">
+          My Shop
+        </Link>
 
-        {/* Center - Navigation links */}
+        {/* Nav links (Desktop) */}
         <div className="hidden md:flex space-x-6">
-          <Link
-            to="/collections/all?gender=Men"
-            className="text-gray-700 hover:text-black text-sm font-medium uppercase"
-          >
-            Men
-          </Link>
-          <Link
-            to="/collections/all?gender=Women"
-            className="text-gray-700 hover:text-black text-sm font-medium uppercase"
-          >
-            Women
-          </Link>
-          <Link
-            to="/collections/all?category=Top Wear"
-            className="text-gray-700 hover:text-black text-sm font-medium uppercase"
-          >
-            Top Wear
-          </Link>
-          <Link
-            to="/collections/all?category=Bottom Wear"
-            className="text-gray-700 hover:text-black text-sm font-medium uppercase"
-          >
-            Bottom Wear
-          </Link>
+          {["Men", "Women"].map((gender) => (
+            <Link
+              key={gender}
+              to={`/collections/all?gender=${gender}`}
+              className="text-gray-700 hover:text-black text-sm font-medium uppercase"
+            >
+              {gender}
+            </Link>
+          ))}
+          {["Top Wear", "Bottom Wear"].map((cat) => (
+            <Link
+              key={cat}
+              to={`/collections/all?category=${cat}`}
+              className="text-gray-700 hover:text-black text-sm font-medium uppercase"
+            >
+              {cat}
+            </Link>
+          ))}
         </div>
 
-        {/* Right - Icons */}
+        {/* Right Icons */}
         <div className="flex items-center space-x-4">
-          {user && user.role === "admin" && (
+          {/* Admin badge */}
+          {user?.role === "admin" && (
             <Link
               to="/admin"
-              className="block bg-black px-2 rounded text-sm text-white"
+              className="bg-black text-white text-sm px-2 py-1 rounded font-medium hover:bg-gray-900"
             >
               Admin
             </Link>
           )}
 
-          <Link to="/profile" className="hover:text-black">
-            <HiOutlineUser className="h-6 w-6 text-gray-700" />
+          {/* Profile icon */}
+          <Link to="/profile" aria-label="Profile">
+            <HiOutlineUser className="h-6 w-6 text-gray-700 hover:text-black" />
           </Link>
+
+          {/* Cart icon */}
           <button
             onClick={toggleCartDrawer}
             className="relative hover:text-black"
+            aria-label="Open cart"
           >
             <HiOutlineShoppingBag className="h-6 w-6 text-gray-700" />
             {cartItemCount > 0 && (
-              <span className="absolute -top-1 bg-rabbit-red text-white text-xs rounded-full px-2 py-0.5">
+              <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">
                 {cartItemCount}
               </span>
             )}
           </button>
 
           {/* Search */}
-          <div className="overflow-hidden">
+          <div className="hidden md:block w-40">
             <SearchBar />
           </div>
 
-          <button onClick={toggleNavDrawer} className="md:hidden">
+          {/* Hamburger (Mobile) */}
+          <button onClick={toggleNavDrawer} className="md:hidden" aria-label="Toggle menu">
             <HiBars3BottomRight className="h-6 w-6 text-gray-700" />
           </button>
         </div>
       </nav>
 
+      {/* Cart Drawer */}
       <CartDrawer drawerOpen={drawerOpen} toggleCartDrawer={toggleCartDrawer} />
 
-      {/* Mobile Navigation Drawer */}
+      {/* Overlay for mobile nav */}
+      {navDrawerOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-30 z-40"
+          onClick={toggleNavDrawer}
+        ></div>
+      )}
+
+      {/* Mobile nav drawer */}
       <div
-        className={`fixed top-8 left-0 w-3/4 sm:w-1/2 md:w-1/3 h-full bg-white shadow-lg transform transition-transform duration-300 z-50 ${
+        className={`fixed top-0 left-0 w-3/4 sm:w-1/2 md:w-1/3 h-full bg-white shadow-lg transform transition-transform duration-300 z-50 ${
           navDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex justify-end p-4">
-          <button onClick={toggleNavDrawer}>
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-lg font-semibold">Menu</h2>
+          <button onClick={toggleNavDrawer} aria-label="Close menu">
             <IoMdClose className="h-6 w-6 text-gray-600" />
           </button>
         </div>
-
-        <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4">Menu</h2>
-          <nav className="space-y-4">
+        <nav className="p-4 space-y-4 text-gray-600">
+          {["Men", "Women"].map((gender) => (
             <Link
-              to="/collections/all?gender=Men"
-              onClick={toggleNavDrawer}
-              className="block text-gray-600 hover:text-black"
+              key={gender}
+              to={`/collections/all?gender=${gender}`}
+              className="block hover:text-black"
             >
-              Men
+              {gender}
             </Link>
+          ))}
+          {["Top Wear", "Bottom Wear"].map((cat) => (
             <Link
-              to="/collections/all?gender=Women"
-              onClick={toggleNavDrawer}
-              className="block text-gray-600 hover:text-black"
+              key={cat}
+              to={`/collections/all?category=${cat}`}
+              className="block hover:text-black"
             >
-              Women
+              {cat}
             </Link>
-            <Link
-              to="/collections/all?category=Top Wear"
-              onClick={toggleNavDrawer}
-              className="block text-gray-600 hover:text-black"
-            >
-              Top-wear
-            </Link>
-            <Link
-              to="/collections/all?category=Bottom Wear"
-              onClick={toggleNavDrawer}
-              className="block text-gray-600 hover:text-black"
-            >
-              Bottom-Wear
-            </Link>
-          </nav>
-        </div>
+          ))}
+        </nav>
       </div>
     </>
   );

@@ -29,24 +29,29 @@ const CartContents = ({ cart, userId, guestId }) => {
   };
 
   return (
-    <div>
+    <div className="divide-y">
       {cart.products.map((product, index) => (
         <div
           key={index}
-          className="flex item-start justify-between py-4 border-b"
+          className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 py-4"
         >
-          <div className="flex items-center">
+          {/* Product Info */}
+          <div className="flex gap-4">
             <img
               src={product.image}
               alt={product.name}
-              className="w-20 h-24 object-cover mr-4 rounded"
+              className="w-24 h-28 object-cover rounded-md shadow"
             />
             <div>
-              <h3>{product.name}</h3>
-              <p className="text-sm text-gray-500">
+              <h3 className="text-lg font-semibold text-gray-800">
+                {product.name}
+              </h3>
+              <p className="text-sm text-gray-500 mt-1">
                 Size: {product.size} | Color: {product.color}
               </p>
-              <div className="flex items-center mt-2">
+
+              {/* Quantity Controls */}
+              <div className="flex items-center mt-3">
                 <button
                   onClick={() =>
                     handleToCart(
@@ -57,11 +62,13 @@ const CartContents = ({ cart, userId, guestId }) => {
                       product.color
                     )
                   }
-                  className="border rounded px-2 py-1 text-xl font-medium"
+                  className="px-3 py-1 rounded-md border border-gray-300 text-lg font-semibold hover:bg-gray-100"
                 >
-                  -
+                  −
                 </button>
-                <span className="mx-4">{product.quantity}</span>
+                <span className="mx-4 text-base font-medium">
+                  {product.quantity}
+                </span>
                 <button
                   onClick={() =>
                     handleToCart(
@@ -72,15 +79,19 @@ const CartContents = ({ cart, userId, guestId }) => {
                       product.color
                     )
                   }
-                  className="border rounded px-2 py-1 text-xl font-medium"
+                  className="px-3 py-1 rounded-md border border-gray-300 text-lg font-semibold hover:bg-gray-100"
                 >
                   +
                 </button>
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-end">
-            <p>${product.price.toLocaleString()}</p>
+
+          {/* Price & Remove */}
+          <div className="flex flex-col items-end gap-2">
+            <p className="text-lg font-medium text-gray-800">
+              ₹{product.price.toLocaleString()}
+            </p>
             <button
               onClick={() =>
                 handleRemoveFromCart(
@@ -89,8 +100,9 @@ const CartContents = ({ cart, userId, guestId }) => {
                   product.color
                 )
               }
+              className="text-red-600 hover:text-red-700 transition"
             >
-              <RiDeleteBin3Line className="h-6 w-6 mt-2 text-red-600" />
+              <RiDeleteBin3Line className="h-6 w-6" />
             </button>
           </div>
         </div>

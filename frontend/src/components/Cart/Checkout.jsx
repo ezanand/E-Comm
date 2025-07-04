@@ -56,9 +56,8 @@ const Checkout = () => {
           },
         }
       );
-    
-        await handleFinalizedCheckout(CheckoutId); // Finalize checkout if payment is successful
-     
+
+      await handleFinalizedCheckout(CheckoutId); // Finalize checkout if payment is successful
     } catch (error) {
       console.error(error);
     }
@@ -77,7 +76,7 @@ const Checkout = () => {
           },
         }
       );
-     navigate("/order-confirmation");
+      navigate("/order-confirmation");
     } catch (error) {
       console.error(error);
     }
@@ -90,58 +89,55 @@ const Checkout = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto py-10 px-6 tracking-tighter">
-      {/* Left Section */}
-      <div className="bg-white rounded-lg p-6">
-        <h2 className="text-2xl uppercase mb-6">Checkout</h2>
-        <form onSubmit={handleCreateCheckout}>
-          <h3 className="text-lg mb-4">Contact Details</h3>
-          <div className="mb-4">
-            <label className="block text-gray-700">Email</label>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-7xl mx-auto py-10 px-6">
+      {/* Left: Form Section */}
+      <div className="bg-white rounded-2xl shadow-md p-8">
+        <h2 className="text-3xl font-bold mb-8">Checkout</h2>
+        <form onSubmit={handleCreateCheckout} className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Contact Details</h3>
             <input
               type="email"
               value={user ? user.email : ""}
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100"
               disabled
             />
           </div>
-          <h3 className="text-lg mb-4">Delivery</h3>
-          <div className="mb-4 grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700">First Name</label>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Delivery</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="text"
-                className="w-full p-2 border rounded"
+                placeholder="First Name"
+                className="p-3 border border-gray-300 rounded-lg"
+                value={shippingAddress.firstName}
                 onChange={(e) =>
                   setShippingAddress({
                     ...shippingAddress,
                     firstName: e.target.value,
                   })
                 }
-                value={shippingAddress.firstName}
                 required
               />
-            </div>
-            <div>
-              <label className="block text-gray-700">Last Name</label>
               <input
                 type="text"
-                className="w-full p-2 border rounded"
+                placeholder="Last Name"
+                className="p-3 border border-gray-300 rounded-lg"
+                value={shippingAddress.lastName}
                 onChange={(e) =>
                   setShippingAddress({
                     ...shippingAddress,
                     lastName: e.target.value,
                   })
                 }
-                value={shippingAddress.lastName}
                 required
               />
             </div>
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Address</label>
             <input
               type="text"
+              placeholder="Address"
+              className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
               value={shippingAddress.address}
               onChange={(e) =>
                 setShippingAddress({
@@ -149,46 +145,40 @@ const Checkout = () => {
                   address: e.target.value,
                 })
               }
-              className="w-full p-2 border rounded"
               required
             />
-          </div>
-          <div className="mb-4 grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700">city</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <input
                 type="text"
-                className="w-full p-2 border rounded"
+                placeholder="City"
+                className="p-3 border border-gray-300 rounded-lg"
+                value={shippingAddress.city}
                 onChange={(e) =>
                   setShippingAddress({
                     ...shippingAddress,
                     city: e.target.value,
                   })
                 }
-                value={shippingAddress.city}
                 required
               />
-            </div>
-            <div>
-              <label className="block text-gray-700">Postal Code</label>
               <input
                 type="text"
-                className="w-full p-2 border rounded"
+                placeholder="Postal Code"
+                className="p-3 border border-gray-300 rounded-lg"
+                value={shippingAddress.postalCode}
                 onChange={(e) =>
                   setShippingAddress({
                     ...shippingAddress,
                     postalCode: e.target.value,
                   })
                 }
-                value={shippingAddress.postalCode}
                 required
               />
             </div>
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Country</label>
             <input
               type="text"
+              placeholder="Country"
+              className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
               value={shippingAddress.country}
               onChange={(e) =>
                 setShippingAddress({
@@ -196,14 +186,12 @@ const Checkout = () => {
                   country: e.target.value,
                 })
               }
-              className="w-full p-2 border rounded"
               required
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Phone</label>
             <input
               type="text"
+              placeholder="Phone"
+              className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
               value={shippingAddress.phone}
               onChange={(e) =>
                 setShippingAddress({
@@ -211,67 +199,73 @@ const Checkout = () => {
                   phone: e.target.value,
                 })
               }
-              className="w-full p-2 border rounded"
               required
             />
           </div>
-          <div className="mt-6">
+
+          <div className="pt-6">
             {!CheckoutId ? (
               <button
                 type="submit"
-                className="w-full bg-black text-white py-3 rounded"
+                className="w-full bg-black text-white py-3 rounded-lg text-lg hover:bg-gray-800 transition"
               >
                 Continue to Payment
               </button>
             ) : (
               <div>
-                <h3 className="text-lg mb-4">Pay with Paypal</h3>
+                <h3 className="text-lg font-semibold mb-4">Pay with PayPal</h3>
                 <PaypalButton
                   amount={cart.totalPrice}
                   onSuccess={handlePaymentSuccess}
-                  onError={(err) => alert("Payment failed , Try again.")}
+                  onError={() => alert("Payment failed, please try again.")}
                 />
               </div>
             )}
           </div>
         </form>
       </div>
-      {/* Right Section */}
-      <div className="bg-gray-200 p-6 rounded-lg">
-        <h3 className="text-lg mb-4">Order Summary</h3>
-        <div className="border-t py-4 mb-4">
+
+      {/* Right: Summary */}
+      <div className="bg-gray-50 p-8 rounded-2xl shadow-sm">
+        <h3 className="text-xl font-semibold mb-6">Order Summary</h3>
+        <div className="divide-y">
           {cart.products.map((product, index) => (
-            <div
-              key={index}
-              className="flex items-start justify-between py-2 border-b"
-            >
-              <div className="flex items-start">
+            <div key={index} className="flex justify-between items-start py-4">
+              <div className="flex gap-4">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-20 h-24 object-cover mr-4"
+                  className="w-20 h-24 object-cover rounded-md"
                 />
-                <div className="">
-                  <h3 className="text-md">{product.name}</h3>
-                  <p className="text-gray-500">Size:{product.size}</p>
-                  <p className="text-gray-500">Color:{product.color}</p>
+                <div>
+                  <p className="font-medium">{product.name}</p>
+                  <p className="text-sm text-gray-500">Size: {product.size}</p>
+                  <p className="text-sm text-gray-500">
+                    Color: {product.color}
+                  </p>
                 </div>
               </div>
-              <p className="text-xl">${product.price?.toLocaleString()}</p>
+              <p className="font-semibold text-gray-800">
+                ₹{product.price?.toLocaleString()}
+              </p>
             </div>
           ))}
         </div>
-        <div className="flex justify-between items-center text-lg mb-4">
-          <p>Subtotal</p>
-          <p>${cart.totalPrice?.toLocaleString()}</p>
-        </div>
-        <div className="flex justify-between items-center text-lg">
-          <p>Shipping</p>
-          <p>Free</p>
-        </div>
-        <div className="flex justify-between items-center text-lg mt-4 border-t pt-4">
-          <p>Total</p>
-          <p>${cart.totalPrice?.toLocaleString()}</p>
+        <div className="border-t pt-4 mt-6 space-y-2 text-lg font-medium">
+          <div className="flex justify-between">
+            <span>Subtotal</span>
+            <span>₹{cart.totalPrice?.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Shipping</span>
+            <span className="text-green-600 font-semibold">Free</span>
+          </div>
+          <div className="flex justify-between pt-2 border-t">
+            <span>Total</span>
+            <span className="text-xl font-bold">
+              ₹{cart.totalPrice?.toLocaleString()}
+            </span>
+          </div>
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ export const EditProductPage = () => {
   const { selectedProduct, loading, error } = useSelector(
     (state) => state.products
   );
+
   const [productData, setProductData] = useState({
     name: "",
     description: "",
@@ -71,6 +72,7 @@ export const EditProductPage = () => {
       setUploading(false);
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateProduct({ id, productData }));
@@ -81,74 +83,55 @@ export const EditProductPage = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 shadow-md rounded-md">
-      <h2 className="text-3xl font-bold mb-6">Edit Product</h2>
-      <form onSubmit={handleSubmit}>
-        {/* name */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">Product Name</label>
-          <input
-            type="text"
-            name="name"
-            value={productData.name}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-            required
-          />
-        </div>
+    <div className="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">Edit Product</h2>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Form Field Generator */}
+        {[
+          { label: "Product Name", name: "name", type: "text" },
+          { label: "Price", name: "price", type: "number" },
+          { label: "Count In Stock", name: "countInStock", type: "number" },
+          { label: "SKU", name: "sku", type: "text" },
+          { label: "Category", name: "category", type: "text" },
+          { label: "Brand", name: "brand", type: "text" },
+          { label: "Collections", name: "collections", type: "text" },
+          { label: "Material", name: "material", type: "text" },
+          { label: "Gender", name: "gender", type: "text" },
+        ].map(({ label, name, type }) => (
+          <div key={name}>
+            <label className="block font-medium mb-1 text-gray-700">
+              {label}
+            </label>
+            <input
+              type={type}
+              name={name}
+              value={productData[name]}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
+              required={name === "name"}
+            />
+          </div>
+        ))}
 
         {/* Description */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">Description</label>
+        <div>
+          <label className="block font-medium mb-1 text-gray-700">
+            Description
+          </label>
           <textarea
             name="description"
             value={productData.description}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
             rows={4}
             required
           />
         </div>
 
-        {/* Price Input */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">Price</label>
-          <input
-            type="number"
-            name="price"
-            value={productData.price}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
-
-        {/* Count in stock */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">Count In Stock</label>
-          <input
-            type="number"
-            name="countInStock"
-            value={productData.countInStock}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
-
-        {/* sku */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">SKU</label>
-          <input
-            type="text"
-            name="sku"
-            value={productData.sku}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
-
-        {/* sizes */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">
+        {/* Sizes */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-700">
             Sizes (comma-separated)
           </label>
           <input
@@ -158,16 +141,16 @@ export const EditProductPage = () => {
             onChange={(e) =>
               setProductData({
                 ...productData,
-                sizes: e.target.value.split(",").map((size) => size.trim()),
+                sizes: e.target.value.split(",").map((s) => s.trim()),
               })
             }
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
           />
         </div>
 
         {/* Colors */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">
+        <div>
+          <label className="block font-medium mb-1 text-gray-700">
             Colors (comma-separated)
           </label>
           <input
@@ -177,34 +160,37 @@ export const EditProductPage = () => {
             onChange={(e) =>
               setProductData({
                 ...productData,
-                colors: e.target.value.split(",").map((color) => color.trim()),
+                colors: e.target.value.split(",").map((c) => c.trim()),
               })
             }
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
           />
         </div>
 
-        {/* Image upload */}
-        <div className="mb-6">
-          <label className="bold font-semibold mb-2">Upload Image </label>
+        {/* Image Upload */}
+        <div>
+          <label className="block font-medium mb-2 text-gray-700">
+            Upload Image
+          </label>
           <input type="file" onChange={handleImageUpload} />
-          {uploading && <p>Uploading image</p>}
-          <div className="flex gap-4 mt-4">
+          {uploading && <p className="text-sm text-gray-500 mt-1">Uploading image...</p>}
+          <div className="flex flex-wrap gap-4 mt-4">
             {productData.images.map((image, index) => (
               <div key={index}>
                 <img
                   src={image.url}
-                  alt={image.altText || "Product Image"}
-                  className="w-20 h-20 object-cover rounded-md shadow"
+                  alt={image.altText || "Product"}
+                  className="w-24 h-24 object-cover rounded-md shadow"
                 />
               </div>
             ))}
           </div>
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-green-500 text-whitepy-2 rounded-md hover:bg-green-600
-                transition-colors"
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-md transition-colors duration-200"
         >
           Update Product
         </button>

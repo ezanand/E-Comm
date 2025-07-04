@@ -30,16 +30,19 @@ const OrderManagement = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Order Management</h2>
-      <div className="overflow mx-auto shadow-md sm:rounded-md">
-        <table className="min-w-full text-left text-gray-500">
-          <thead className="bg-gray-100 text-xs uppercase text-gray-700">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+        Order Management
+      </h2>
+
+      <div className="overflow-x-auto shadow-md sm:rounded-lg bg-white">
+        <table className="min-w-full text-sm text-left text-gray-700">
+          <thead className="bg-gray-100 uppercase text-xs text-gray-600 tracking-wider">
             <tr>
-              <th className="py-2 px-4">Order ID</th>
-              <th className="py-2 px-4">Customer</th>
-              <th className="py-2 px-4">Total Price</th>
-              <th className="py-2 px-4">Status</th>
-              <th className="py-2 px-4">Actions</th>
+              <th className="px-6 py-4">Order ID</th>
+              <th className="px-6 py-4">Customer</th>
+              <th className="px-6 py-4">Total Price</th>
+              <th className="px-6 py-4">Status</th>
+              <th className="px-6 py-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -47,21 +50,22 @@ const OrderManagement = () => {
               orders.map((order) => (
                 <tr
                   key={order._id}
-                  className="border-b hover:bg-gray-50 cursor-pointer"
+                  className="border-b hover:bg-gray-50 transition-colors"
                 >
-                  <td className="py-4 px-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     #{order._id}
                   </td>
-                  <td className="p-4">{order.user.name}</td>
-                  <td className="p-4">{order.totalPrice.toFixed(2)}</td>
-                  <td className="p-4">
+                  <td className="px-6 py-4">{order.user.name}</td>
+                  <td className="px-6 py-4">
+                    ₹{order.totalPrice.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4">
                     <select
                       value={order.status}
                       onChange={(e) =>
                         handleStatusChange(order._id, e.target.value)
                       }
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                        focus:ring-blue-500 focus:border-blue-500 block p-2,5"
+                      className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     >
                       <option value="Processing">Processing</option>
                       <option value="Shipped">Shipped</option>
@@ -69,10 +73,12 @@ const OrderManagement = () => {
                       <option value="Cancelled">Cancelled</option>
                     </select>
                   </td>
-                  <td className="p-4">
+                  <td className="px-6 py-4">
                     <button
-                      onClick={() => handleStatusChange(order._id, "Delivered")}
-                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                      onClick={() =>
+                        handleStatusChange(order._id, "Delivered")
+                      }
+                      className="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-md hover:bg-green-600 transition"
                     >
                       Mark as Delivered
                     </button>
@@ -81,7 +87,10 @@ const OrderManagement = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="p-4 text-center text-gray-500">
+                <td
+                  colSpan={5}
+                  className="px-6 py-4 text-center text-gray-500"
+                >
                   No orders found.
                 </td>
               </tr>

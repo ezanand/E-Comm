@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../../redux/slice/cartSlice";
 import { logout } from "../../redux/slice/authSlice";
-
+import Avatar from "react-avatar";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -24,23 +24,38 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow container mx-auto p-4 md:p-6">
-        <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
-          {/* Left Section */}
-          <div className="w-full md:w-1/3 lg:w-1/4 shadow-md rounded-lg p-6">
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">{user?.name}</h1>
-            <p className="text-lg text-gray-600 mb-4">{user?.email}</p>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white">
+      <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Profile Card */}
+          <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 space-y-4">
+            <div className="text-center">
+              <Avatar
+                name={user?.name}
+                size="96"
+                round={true}
+                color="#ea2e0e"
+                fgColor="#fff"
+                className="mx-auto mb-4"
+              />
+              <h1 className="text-2xl font-semibold">{user?.name}</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {user?.email}
+              </p>
+            </div>
             <button
               onClick={handleLogout}
-              className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-600"
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition"
             >
-              LogOut
+              Log Out
             </button>
           </div>
-          {/* Right Section */}
-          <div className="w-full md:w-2/3 lg:3/4">
-            <MyOrderPage />
+
+          {/* Orders Section */}
+          <div className="md:col-span-2">
+            <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 sm:p-6">
+              <MyOrderPage />
+            </div>
           </div>
         </div>
       </div>
