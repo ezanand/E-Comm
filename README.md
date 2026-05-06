@@ -133,7 +133,6 @@ npm run dev
 ## 🔐 Authentication & Authorization
 
 - 🔒 JWT-based role authentication
-- 🔐 Google OAuth (via Firebase)
 - 🔐 Admin routes protected via middleware (`protect`, `admin`)
 
 ---
